@@ -1,0 +1,21 @@
+<script src="https://unpkg.com/vue@2.5.17"></script>
+
+<div id="fruits-list">
+  <!-- pageheaderコンポーネントを呼び出し。 -->
+  <page-header>
+    <!-- headerスロットに情報を移譲 -->
+    <span slot="header"><div>hoge</div></span>
+  </page-header>
+  <!-- スロットを指定していないので <div>fuga</div> はロストする -->
+  <page-header class="header"><div>fuga</div></page-header>
+  <page-content class="contents">
+    <ul slot="content">
+      <li>西瓜</li>
+      <li>マンゴー</li>
+    </ul>
+  </page-content>
+
+</div>
+ 
+<script type="text/javascript" src= "vue1.js"></script>
+<link rel="stylesheet" type="text/css" href="vue1.css" />
