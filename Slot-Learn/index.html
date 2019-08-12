@@ -1,21 +1,60 @@
+<!DOCTYPE html>
+<title>Vue app</title>
 <script src="https://unpkg.com/vue@2.5.17"></script>
 
-<div id="fruits-list">
-  <!-- pageheaderコンポーネントを呼び出し。 -->
-  <page-header>
-    <!-- headerスロットに情報を移譲 -->
-    <span slot="header"><div>hoge</div></span>
-  </page-header>
-  <!-- スロットを指定していないので <div>fuga</div> はロストする -->
-  <page-header class="header"><div>fuga</div></page-header>
-  <page-content class="contents">
-    <ul slot="content">
-      <li>西瓜</li>
-      <li>マンゴー</li>
-    </ul>
-  </page-content>
+<div id="app">
+    <!-- 
+        基本的にカスタムコンポーネントは開始/終了タグの間のコンテンツを無視する 
+        しかし、スロット機能を使うことで、再利用性を高めるために、コンポーネントのタグ間のコンテンツを受け付けることができる
+    -->
+    <!-- 
+        Submitというタグ無し文字列をコンテンツとしてコンポーネントに送る。
+    -->
+    <my-button>Submit</my-button>
+    <!-- 何もない場合はコンテンツを送っていない -->
+    <my-button></my-button>
 
+<!-- 以下名前付きスロット -->
+    <!-- 
+        下記の場合は、<div class="slottest">を5つ作成する 
+        # カスタムコンポーネントを5回呼び出しているだけのため。
+    -->
+    <div style="border: 1px solid">
+        <!-- headerのみ置き換えられる -->
+        <my-page><h3 slot="header">Header</h3></my-page>
+        <!-- 単一スロットとして扱われてmainのみ置き換えられる -->
+        <my-page><p>main01</p></my-page>
+        <!-- footerのみ置き換えられる -->
+        <my-page><h3 slot="footer">footer</h3></my-page>
+        <!-- 単一スロットとして扱われてmainのみ置き換えられる -->
+        <my-page><p>main02</p></my-page>
+        <!-- 存在しないスロット名を指定した場合は、置き換えは発生せず、コンテンツが存在しないカスタムコンポーネント呼び出しとして扱われる-->
+        <my-page><p slot="invalid">main03</p></my-page>
+    </div>
+    <!--　
+        こちらの場合はカスタムコンポーネントを1回しか呼び出していいないので、
+        すべての処理がスロットコンテンツになる
+    -->
+    <div style="border: 1px solid">
+        <my-page>
+            <!-- headerを置き換える -->
+            <h3 slot="header">Header</h3> 
+            <!-- 単一スロットを置き換える -->
+            <p>main04</p>
+            <!-- 名前付きスロットでも複数指定時の挙動は単一スロットと同じ -->
+            <h3 slot="footer">footer01</h3>
+            <h3 slot="footer">footer02</h3>
+            <!-- -->
+            <p>main06 <span slot="footer">span footer</span></p>
+            <p slot="invalid">main07</p>
+        </my-page>
+    </div>
+    
 </div>
- 
-<script type="text/javascript" src= "vue1.js"></script>
-<link rel="stylesheet" type="text/css" href="vue1.css" />
+
+
+
+
+<script src="app.js"></script>
+
+
