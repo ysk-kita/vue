@@ -23,11 +23,34 @@ var MyPage = {
     `
 }
 
+// カスタムコンポーネントmy-buttonの定義
+var MyButton2 = {
+    // new Vueで定義しているcomponentsと親子関係でこちらが子であるため、データバインディングを行う場合は、親のdataを参照し、子のdataは適用されない
+    // また、親のdataには無いが、子のdataには定義されている項目があるといった場合でも、子のdataを参照することはない
+    data: function(){
+        return {
+            textLabel: 'child scope',
+            hoge: 'hoge'
+        }  
+    },
+    template: `
+        <button>
+            <slot><div>OK</div></slot>
+        </button>
+    `
+}
+
 new Vue({
     // id=app配下ではコンポーネント定義したカスタムタグを使えるようにする
     el: '#app',
+    data: function(){
+        return {
+            textLabel: 'parent scope'
+        }
+    },
     components: {
         MyButton: MyButton,
-        MyPage: MyPage
+        MyPage: MyPage,
+        MyButton2: MyButton2
     }
 })
