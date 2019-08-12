@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<script src="https://unpkg.com/vue@2.6.10"></script>
+
+<div id="app">
+    <!-- ①カスタムタグのテンプレートへの置き換えを行う -->
+    <todo-list :todos="todolists">
+        <!-- ⑤スロットプロパティからtodotaskを取り出してレンダリングする -->
+        <!-- v-slot 属性は <template> 要素にしか記述できないことに注意。 -->
+        <template v-slot:default="slotProps">
+            <li v-if="slotProps.todotask.isCompleted">
+              {{ slotProps.todotask.text }}
+            </li>
+        </template>
+    </todo-list>
+</div>
+
+<script src="app_ScopeSlot.js"></script>
