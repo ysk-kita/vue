@@ -1,34 +1,127 @@
-// root def
-// <router-link>でto属性に指定したパスのコンポーネントを呼び出す。パスが一致しなければ何も返さない
-// <router-view>は、指定されたルートが持つテンプレートをレンダリングする
-var router2 = new VueRouter({
+var UserData = [
+    	{id: 1, name: 'kitano', description: 'hoge fuga'},
+    	{id: 2, name: 'kaneko', description: 'hoge piyo'}
+]
+
+// def: return to JSON
+var getUsersData = function (callbackfunc) {
+	// 第二引数で指定した時間経過後に、functionを呼び出す。
+  // 呼び出されfunctionは引数で受け取った関数を実行する
+	setTimeout(function(){
+  	callbackfunc(null, [
+    	{id: 1, name: 'kitano'},
+    	{id: 2, name: 'kaneko'}
+    ])
+  }, 1000)
+}
+
+// def: return to JSON
+var getUser = function (userId, callbackfunc) {
+	// 第二引数で指定した時間経過後に、functionを呼び出す。
+  // 呼び出されfunctionは引数で受け取った関数を実行する
+	setTimeout(function(){
+  	var filterd = UserData.filter(function(user){
+			return user.id === parseInt(userId, 10)
+    })
+    callbackfunc(null, filterd && filterd[0])
+  }, 1000)
+}
+
+// def: x-template use id=user-list
+// vue routerの中で定義するには長すぎるオブジェクト型のため,別途オブジェクトとして定義している
+var UserDetail = {
+	template: '#user-detail',
+  data: function(){
+  	return {
+    	loading: false,
+      user: null,
+      error: null
+    }
+  },
+  created: function() {
+    this.fetchData()
+  },
+  watch: {	// watch内で定義した項目を監視できる。監視項目に変化があればイベントを呼び出す
+  	'$route': 'fetchData'
+  },
+  methods: {
+  	// 今回の場合はルートに変化があれば、fetchData関数を実行する
+  	fetchData: function(){
+    	// データの取得処理の実行中なのでloadingフラグをONにする
+    	this.loading = true
+      
+      // 定義しているグローバル関数を呼び出す。
+     	// getUserDataにfunctionを渡してコールバックさせる
+      getUser(this.$route.params.userId, 
+      	(function(err, user){
+      	this.loading = false
+        if (err) {
+        	this.error = err.toString()
+        } else {
+        	this.user = user
+        }      
+      }).bind(this)) // コールバック関数でこのインスタンスをthisとするために、bindで紐づける
+    }
+  }
+}
+
+var UserList = {
+	template: '#user-list',
+  data: function(){
+  	return {
+    	loading: false,
+      users: function() { return [] },
+      error: null
+    }
+  },
+  created: function() {
+    this.fetchData()
+  },
+  watch: {	// watch内で定義した項目を監視できる。監視項目に変化があればイベントを呼び出す
+  	'$route': 'fetchData'
+  },
+  methods: {
+  	// 今回の場合はルートに変化があれば、fetchData関数を実行する
+  	fetchData: function(){
+    	// データの取得処理の実行中なのでloadingフラグをONにする
+    	this.loading = true
+      
+      // 定義しているグローバル関数を呼び出す。
+     	// getUserDataにfunctionを渡してコールバックさせる
+      getUsersData(
+      	(function(err, users){
+      	this.loading = false
+        if (err) {
+        	this.error = err.toString()
+        } else {
+        	this.users = users
+        }      
+      }).bind(this)) // コールバック関数でこのインスタンスをthisとするために、bindで紐づける
+    }
+  }
+}
+
+// def: vue Router
+var router = new VueRouter({
 	routes: [
     {
-      path: '/index',
+      path: '/top',
       component: {
-        template: '<div>Top page</div>'
+        template: '<div>トップページ</div>'
         }
     },	
     {
-    	// :xxxとすると /users/xxxでurlパターンごとの処理を行える
+      path: '/users', 
+      component: UserList	// x-template:user-listをコンポーネントのテンプレートとして指定
+    },
+    {
       path: '/users/:userId', 
-      name: 'user', 
-      component: {
-        template: '<div>{{$route.params.userId}}</div>'
-        }
-    }  
+      component: UserDetail	// x-template:user-detailをコンポーネントのテンプレートとして指定
+    },
   ]
-})
-// フック関数を使う場合、VueRouter変数.beforeEach とする
-router2.beforeEach( function (to, from, next) {
-	if (to.path === '/users'){
-  	next('/index')
-  } else {
-  	next()
-  }
 })
 
 var app = new Vue({
-	router: router2
+	router: router
 }).$mount('#app')
 
