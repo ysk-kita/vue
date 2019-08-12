@@ -27,7 +27,61 @@ var getUser = function (userId, callbackfunc) {
   }, 1000)
 }
 
-// def: x-template use id=user-list
+// ユーザ作成用関数
+var postUser = function(params, callbackfunc){
+	setTimeout( function(){
+  	params.id = UserData.length + 1
+    UserData.push(params)	
+    callbackfunc(null, params)
+  }, 1000)
+}
+
+// ユーザ作成
+var UserCreate = {
+	template: '#user-create',
+  data: function(){
+  	return {
+    	sending: false,
+      user: this.defaultUser(),
+      error: null
+    }
+  },
+  created: function(){},  // コンポーネント作成時はなにもしない
+	methods: {
+  	defaultUser: function() {
+    	return {
+      	name: '',
+        description: ''
+      }
+    },
+    createUser: function(){ // バリデーションで用いる
+			if(this.user.name.trim() === ''){
+      	this.error = 'Name is Required.'
+        return
+      }
+      if(this.user.description.trim() === ''){
+      	this.error = 'Description is Required.'
+        return
+      }
+      postUser(this.user, (function (err, user){
+      	this.sending = false
+        if(err){
+        	this.error = err.toString()
+        } else {
+        	this.error = null
+          this.user = user
+          alert('Inserted New User')
+          
+          this.$router.push('/users')
+        }
+        
+      }).bind(this))
+    }
+  }
+}
+
+
+// ユーザ詳細コンポーネント
 // vue routerの中で定義するには長すぎるオブジェクト型のため,別途オブジェクトとして定義している
 var UserDetail = {
 	template: '#user-detail',
@@ -65,6 +119,7 @@ var UserDetail = {
   }
 }
 
+// UserListコンポーネント
 var UserList = {
 	template: '#user-list',
   data: function(){
@@ -114,10 +169,17 @@ var router = new VueRouter({
       path: '/users', 
       component: UserList	// x-template:user-listをコンポーネントのテンプレートとして指定
     },
+    // /users/:userIdより後ろで定義すると、userid=newと解釈されて、UserCreateページではなく、userDetailページにルーティングされてしまう。
+    // パターンマッチングとかぶるルートを定義するときは、パターンマッチングよりも前に定義する
+    {
+      path: '/users/new', 
+      component: UserCreate
+    },
     {
       path: '/users/:userId', 
       component: UserDetail	// x-template:user-detailをコンポーネントのテンプレートとして指定
     },
+
   ]
 })
 

@@ -11,9 +11,11 @@
       <nav>
         <router-link to="/top">top page</router-link>
         <router-link to="/users">users page</router-link> 
-        <router-view></router-view>
       </nav>
-    </div>   
+      <div>
+        <router-view></router-view>      
+      </div>
+    </div>
   </body>
 </html>
 
@@ -26,6 +28,7 @@
     <div v-for="user in users" v-bind:key="user.id">
     	<router-link v-bind:to="'/users/'+user.id">{{ user.name }}</router-link>
     </div>
+    <router-link to="/users/new">Create new User</router-link>
   </div>
 </script>
 
@@ -37,6 +40,28 @@
     <div v-if="user">
       <h2>{{ user.name }}</h2>
       <p>{{ user.description }}</p>
+    </div>
+  </div>
+</script>
+
+<!-- ユーザ作成ページのテンプレート -->
+<script type="text/x-template" id="user-create">
+  <div>
+    <div class="sending" v-if="sending">Sending...</div>
+    <div>
+      <h2>Create New User</h2>
+      <div>
+        <label>Name:</label>
+        <input type="text" v-model="user.name">
+      </div>
+      <div>
+        <label>Description</label>
+        <textarea v-model="user.description"></textarea>
+      </div>
+      <div class="error" v-if="error">{{error}}</div>
+      <div>
+        <input type="button" @click="createUser" value="Submit">
+      </div>
     </div>
   </div>
 </script>
