@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vue Training</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://unpkg.com/vue@latest"></script>
+  <link rel="stylesheet" type="text/css" href="vue1.css" />
+</head>
+
+<body>
+  <div id="app">
+    <input type="text" v-bind:class="{textbox: isAvailable}" v-model="modelValue">
+    {{modelValue}} is {{isHit ? 'Hit' : 'Not Found' }}
+    <table border="1">
+      <tr><th>Key</th><th>Value</th><th>Price</th></tr>
+      <tr v-for="item in itemList">
+        <td>{{item.key}}</td>
+        <td>{{item.value}}
+          <p v-if="isSale(item)">sale</p>
+          <p v-else>Not sale</p>
+        </td>
+        <td>{{item.price | format_test | attach_unit }}</td>
+      </tr>
+    </table>
+    <button class="btn" v-on:click="deadly">bomb</button>
+  </div>
+
+
+  <script type="text/javascript" src= "vue1.js"></script>
+</body>
+</html>
