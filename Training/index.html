@@ -23,7 +23,15 @@
         <td>{{item.price | format_test | attach_unit }}</td>
       </tr>
     </table>
-    <button class="btn" v-on:click="deadly">bomb</button>
+    <button class="btn" v-on:click="onMinItem">min</button>
+    <template v-if="stock >= 1">
+      <span>残{{stock}}</span>
+    </template>
+    {{message}}
+
+    <div>
+      cursor:{{point.x}}, {{point.y}}
+    </div>
   </div>
 
 

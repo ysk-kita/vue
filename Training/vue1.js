@@ -16,13 +16,12 @@ var app = new Vue({
         flag: false,
         price : 500,
       },
-    ]
+    ],
+    message: '',
+    stock: 10,
+    point: { x:0, y: 0},
   },
   methods: {
-    move: function(x, y){
-      this.pos.x += x;
-      this.pos.y += y;
-    },
     isSale: function(item){
       console.log(item);
       return item.flag;
@@ -30,6 +29,13 @@ var app = new Vue({
     deadly: function(){
       this.$destroy();
       console.log('before');
+    },
+    onMinItem: function(){
+      this.stock--;
+    },
+    mousemoveHandler: function($event){
+      this.point.x = $event.clientX;
+      this.point.y = $event.clientY;
     }
   },
   filters: {
@@ -46,9 +52,19 @@ var app = new Vue({
     }
   },
   watch: {
+    // stock変数のステータス変更  を監視
+    stock: function(newStock, oldStock){
+      if(newStock === 0){
+        this.message = 'Sold Out';
+      }
+    },
 
   },
   beforeDestroy: function() {
     console.log('before');
+  },
+  created: function(){
+    // インスタンス生成時にハンドラ処理を追加
+    //addEventListener('mousemove', this.mousemoveHandler);
   },
 });
