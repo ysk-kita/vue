@@ -20,6 +20,20 @@ var app = new Vue({
     message: '',
     stock: 10,
     point: { x:0, y: 0},
+    year: 2019,
+    year2: 2020,
+    answer: 'はい',
+    answers: [],
+    radio: 'select',
+    selectBox: '',
+    multiSelect: [],
+    options: [
+      {code: 'A', label: 'One'},
+      {code: 'B', label: 'Two'},
+      {code: 'C', label: 'Three'},
+    ],
+    selectDay: null,
+    minDay: null
   },
   methods: {
     isSale: function(item){
@@ -36,6 +50,15 @@ var app = new Vue({
     mousemoveHandler: function($event){
       this.point.x = $event.clientX;
       this.point.y = $event.clientY;
+    },
+    inputHandler: function($event){
+      this.year2 = $event.target.value;
+    },
+    formatDate: function(dt){
+      var year = dt.getFullYear();
+      var month = ('00' + (dt.getMonth()+1)).slice(-2);
+      var date =  ('00' + dt.getDate()).slice(-2);
+      return year + '-' + month + '-' + date;
     }
   },
   filters: {
@@ -49,6 +72,13 @@ var app = new Vue({
   computed: {
     isHit: function(){
       return isNaN(this.modelValue);
+    },
+    // answersリストの値を文字列結合する
+    selection: function(){
+      return this.answers.join();
+    },
+    multiSelected: function(){
+      return this.multiSelect.length >= 1 ? this.multiSelect.join() : '';
     }
   },
   watch: {
@@ -66,5 +96,8 @@ var app = new Vue({
   created: function(){
     // インスタンス生成時にハンドラ処理を追加
     //addEventListener('mousemove', this.mousemoveHandler);
+
+    this.selectDay = this.formatDate(new Date());
+    this.minDay = this.selectDay;
   },
 });

@@ -32,9 +32,35 @@
     <div>
       cursor:{{point.x}}, {{point.y}}
     </div>
+    v-modelは半角のみリアルタイム<input type="text" v-model.trim="year"><p>{{year}}</p>
+    v-on:inputを使えば全角もリアルタイム<input type="text" v-on:input="inputHandler" v-bind:value="year2"><p>{{year2}}</p>
+    <p>true-value/false-valueオプションで真偽値に対応させる文字列を指定できる：{{answer}}</p>
+    <input type="checkbox" id="test02" v-model="answer" true-value="はい" false-value="いいえ">
+    <label for="test01">チェックしてください</label>
+    <p>チェックボックスにList型変数をバインドするとグループ化できる:{{selection}}</p>
+    <!-- v-modelでListを指定している場合は、チェックを入れるとそのvalueが指定しているListに格納される -->
+    <input type="checkbox" v-model="answers" value="item1">One
+    <input type="checkbox" v-model="answers" value="item2">Two
+    <input type="checkbox" v-model="answers" value="item3">Three
+    <p>ラジオボタンはListのみバインドできる:{{radio}}</p>
+    <input type="radio" v-model="radio" value="item1">One
+    <input type="radio" v-model="radio" value="item2">Two
+    <input type="radio" v-model="radio" value="item3">Three
+    <p>セレクトボックスは単一選択なら文字列をバインド:{{selectBox}}</p>
+    <select v-model="selectBox">
+      <option disabled value="">選択してください</option>
+      <option v-for="item in options" v-bind:value="item.label" v-bind:key="item.code">{{item.label}}</option>
+    </select>
+    <p>セレクトボックスは複数選択ならListをバインド:{{multiSelected}}</p>
+    <select v-model="multiSelect" multiple>
+      <option value="first">1</option>
+      <option value="second">2</option>
+      <option value="third">3</option>
+    </select>
+    <p>calender:{{selectDay}}</p>
+    <input type="date" v-model="selectDay" v-bind:min="minDay">
+
   </div>
-
-
   <script type="text/javascript" src= "vue1.js"></script>
 </body>
 </html>
