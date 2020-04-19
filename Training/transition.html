@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vue Training</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://unpkg.com/vue@latest"></script>
+  <link rel="stylesheet" href="vue01.css">
+
+</head>
+
+<body>
+  <div id="transition">
+    <button v-on:click="show = !show">表示切り替え</button>
+    <transition name="fade">
+      <p v-if="show">テスト文章ああああああ</p>
+    </transition>
+    <transition name="slide">
+      <p v-if="show">SlideInbunsyou</p>
+    </transition>
+  </div>
+
+  <script type="text/javascript" src= "vue01.js"></script>
+</body>
+</html>

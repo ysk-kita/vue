@@ -1,0 +1,23 @@
+/* フェード */
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+.fade-enter-to, .fade-leave{
+  opacity: 1;
+}
+.fade-enter-active, .fade-leave-active{
+  transition: opacity 0.5s;
+}
+
+/* スライド院 */
+.slide-enter-active, .slide-leave-active{
+  transition: opacity 0.5s, transform 0.5s;
+}
+.slide-enter, .slide-leave-to {
+  opacity: 0;
+  transform: translateY(100%);
+}
+.slide-enter-to, .slide-leave{
+  transform: translateY(0);
+
+}

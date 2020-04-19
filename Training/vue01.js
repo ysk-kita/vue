@@ -101,3 +101,10 @@ var app = new Vue({
     this.minDay = this.selectDay;
   },
 });
+
+var trans = new Vue({
+  el: '#transition',
+  data: {
+    show: true
+  }
+});
